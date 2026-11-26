@@ -1,0 +1,11 @@
+# HTTPS in front of the hub. With a real domain Caddy gets a Let's Encrypt certificate
+# automatically (ports 80 and 443 must be reachable); with "localhost" it uses its own local CA.
+{$CONCORD_DOMAIN:localhost} {
+	reverse_proxy hub:8787 {
+		# Stream SSE without buffering; wait_for_updates holds a request for up to 55 s.
+		flush_interval -1
+		transport http {
+			read_timeout 90s
+		}
+	}
+}

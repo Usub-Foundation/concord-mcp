@@ -1,0 +1,10 @@
+# TLS in front of the hub. Run the hub with --public-url https://concord.example.com
+concord.example.com {
+	reverse_proxy 127.0.0.1:8787 {
+		# Stream SSE responses without buffering; wait_for_updates holds requests up to 55 s.
+		flush_interval -1
+		transport http {
+			read_timeout 90s
+		}
+	}
+}

@@ -1,0 +1,47 @@
+[package]
+name = "concord-mcp"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "MCP hub that lets AI agents of different people share one plan, split tasks and always settle conflicts"
+license = "MIT"
+readme = "README.md"
+keywords = ["mcp", "agents", "multi-agent", "collaboration", "planning"]
+categories = ["command-line-utilities", "development-tools"]
+
+[[bin]]
+name = "concord"
+path = "src/main.rs"
+
+[dependencies]
+rmcp = { version = "3.11", features = ["server", "macros", "transport-streamable-http-server", "elicitation"] }
+axum = "0.8"
+http = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal", "sync", "time"] }
+tokio-util = "0.7"
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio", "tls-rustls-ring-webpki", "postgres", "macros", "migrate", "json", "time"] }
+async-trait = "0.1"
+csv = "1"
+reqwest = { version = "0.13", default-features = false, features = ["json", "query", "http2", "rustls-no-provider"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+chacha20poly1305 = "0.10"
+base64 = "0.22"
+futures = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+clap = { version = "4", features = ["derive", "env"] }
+sha2 = "0.10"
+getrandom = "0.3"
+thiserror = "2"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+time = { version = "0.3", features = ["formatting", "parsing", "macros", "serde"] }
+
+[dev-dependencies]
+rmcp = { version = "3.11", features = ["client", "transport-streamable-http-client-reqwest", "elicitation"] }
+
+[profile.release]
+lto = "thin"
+codegen-units = 4
+strip = "symbols"
